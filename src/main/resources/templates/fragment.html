@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous"
+        />
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title th:fragment="titlePage" th:text="|${title} - Rental|"> <img th:src="@{/img/logo.png}"></title>
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light nav px-3 nav" >
+        <div class="container-fluid nav">
+            <a class="navbar-brand font-italic" th:href="@{/}"><img th:src="@{/img/logo.png}" alt="favicon" width="45"  /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse"  id="navbarNavDropdown">
+                <ul class="navbar-nav nav" >
+                    <li class="nav-item ">
+                        <a class="nav-link fw-bold fs-5 active nav" sec:authorize="hasRole('ADMIN')" th:href="@{/rentals}"id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Rentals
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link fw-bold fs-5 active nav" sec:authorize="hasRole('GUEST')" th:href="@{/rentals/bookings}">
+                            My rentals
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown"sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link dropdown-toggle fw-bold fs-5 nav" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Guests
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu" > 
+                            <li >
+                                <a class="dropdown-item fw-bold " th:href="@{/guests/create}">create</a>
+                            </li>
+                            <li >
+                                <a class="dropdown-item fw-bold " th:href="@{/guests}">list</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link fw-bold fs-5 active nav" sec:authorize="hasRole('HOST')" th:href="@{/houses}">
+                            My houses
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold fs-5"sec:authorize="hasAuthority('ADMIN')" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Houses
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" > 
+                            <li>
+                                <a class="dropdown-item fw-bold" th:href="@{/houses/create}">Create</a>
+                            </li >
+                            <li>
+                                <a class="dropdown-item fw-bold" th:href="@{/houses}">List</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold fs-5" href="#"sec:authorize="hasRole('ADMIN')" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hosts
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" > 
+                            <li>
+                                <a class="dropdown-item fw-bold"  th:href="@{/hosts}">List</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link fw-bold fs-5 active nav" sec:authorize="hasRole('ADMIN')" th:href="@{/comentarios}">
+                            Comments
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav navbar-nav justify-content-end navbar-collapse">
+                    <div sec:authorize="hasRole('HOST')" class="bt-lg px-2">
+                        <a class="btn btn-success " th:href="@{/houses/create}">Record house</a>
+                    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-bold fs-5 active nav"sec:authorize="isAuthenticated()"
+                           href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            My data
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light ml-auto w-100 justify-content-end" > 
+                            <li>
+                                <a class="dropdown-item fw-bold" th:href="@{/personalData}">Personal data</a>
+                            </li >
+                            <li>
+                                <a class="dropdown-item fw-bold" th:href="@{/houses}">My houses</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item fw-bold" th:href="@{/rentals/bookings}">My bookings</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <div sec:authorize="isAuthenticated()">
+                        <img  class ="img-avatar mb-2 mt-2" th:src=" @{/pics/user}"alt="Avatar"/>
+    
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <img class =" img-avatar " width="45px" th:src="@{/img/noUser.jpg}"alt="Avatar"/>
+                    </div>
+
+                    <div sec:authorize="hasRole('ADMIN')" class="bt-lg px-5 mr-5 right">
+                        <a class="btn btn-success " th:href="@{/panel}">Create account</a>
+                    </div>
+                    <div class=" right">
+                        <a class="btn btn-warning mr-5" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+                    </div>
+                    <div class=" bt-lg d-flex">
+                        <a class="btn btn-success mr-5" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="fot">
+        <footer id="footer" th:fragment="footer" class="footer font-small white fixed-bottom">
+            <div class="footer-copyright text-center bg-muted bg-gradient ">
+                <span>© 2021 Copyright:</span>
+                <a href="https://www.linkedin.com/in/mcolquejaunin/" class="linkedin" > Maximiliano Colque Jaunin</a>
+            </div>
+        </footer>
+    </div>
+    <div th:fragment="alerts">
+
+        <div class="alert alert-success alert-dismissible fade show " role="alert" th:if="${exito !=null}">
+            <div class="text-center" th:text="${exito}"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error !=null}">
+            <div class="text-center" th:text="${error}"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <script th:fragment='verification'>
+        (() => {
+            "use strict";
+
+            const form = document.getElementById("formulario");
+            form.addEventListener("submit", (event) => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add("was-validated");
+            }, false);
+        })();
+    </script>
+    <div th:fragment='font'>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    </div>
+</html>

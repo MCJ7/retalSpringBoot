@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang ="es" xmlns:th="http://wwww.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title th:replace="fragment :: titlePage"></title>
+            <link rel="icon" type="image/png" th:href="@{/img/logo.png}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+            />
+        <nav th:replace="fragment :: font"></nav>
+        <link <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <nav th:replace="fragment :: navbar"></nav>
+        <div class=" mx-5 mt-4 text-white">
+           <h1 th:text="|${title}|"></h1>
+
+            <div th:replace="fragment :: alerts"></div>
+            <div th:if="${objects.isEmpty()}">
+                <h3  class="empty" th:text="${emptyList}"></h3>
+            </div>
+            <div class="table-responsive" th:unless="${objects.isEmpty()}">
+                <table class="table text-white mt-4" table-bordered>
+                    <thead class="table-head">
+                        <tr >
+                            <th>Host</th>
+                            <th>Since</th>
+                            <th>Until</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-body">
+                        <tr th:each="object : ${objects}">
+                            <td th:text ="${object.bookingName}"></td>
+                            <td th:text ="${#temporals.format(object.checkIn, 'dd/MM/yyyy')}"></td>
+                            <td th:text ="${#temporals.format(object.checkOut, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <a class="btn btn-primary " th:href="@{/rentals/edit/__${object.id}__}"sec:authorize="hasRole('ADMIN')">Editar</a>
+                            </td>
+                            <td ><form method="post"
+                                       th:action="@{/rentals/state/__${object.id}__}">
+                                    <button th:class="${object.enable} ? 'btn btn-danger' : 'btn btn-success'"
+                                            type="submit" sec:authorize="hasRole('ADMIN')"th:text="${object.enable} ? 
+                                            'Deactivate' : 'Activate'"></button>
+                                </form></td>
+                            </td>
+                            <td >
+                                <form method="post" th:action="@{/rentals/delete/__${object.id}__}">
+                                    <button class="btn btn-danger"sec:authorize="hasRole('ADMIN')" 
+                                            type="submit">Delete</button>
+                                </form>
+                            </td>
+                            <td >
+                                <form th:action="@{/comments/create/__${object.house.getId()}__}">
+                                    <button class="btn btn-warning" type="submit">Comment</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer th:replace="fragment :: footer"></footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>

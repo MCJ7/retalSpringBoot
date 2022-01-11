@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang ="es" xmlns:th="http://wwww.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" th:href="@{/img/logo.png}" />
+        <title th:replace="fragment :: titlePage"></title>
+        <link
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <nav th:replace="fragment :: font"></nav>
+</head>
+<body>
+
+    <nav th:replace="fragment :: navbar"></nav>
+    <h1 >Rentals</h1>
+    <div class="flex-container">
+        <div  >
+            <a sec:authorize="hasRole('USER')" class="flex-item btn" th:href="@{/estancias/crear}">Record booking</a>
+        </div>
+        <div  >
+            <a sec:authorize="hasRole('ADMIN')"class="flex-item btn" th:href="@{/estancias}">View rentals</a>
+        </div>
+        <div sec:authorize="hasRole('ADMIN')" >
+            <a class="flex-item btn" th:href="@{/guests}">Guests</a>
+        </div>   
+        <a class="flex-item btn" th:href="@{/houses}">Houses</a>
+        <div sec:authorize="hasRole('ADMIN')" >
+            <a class="flex-item btn" th:href="@{/hosts}">Hosts </a>
+        </div>
+        <div sec:authorize="hasRole('ADMIN')" >
+            <a class="flex-item btn" th:href="@{/comments}">Comments</a>
+
+        </div>    
+        <div sec:authorize="hasRole('USER')" >
+            <a class="flex-item btn" th:href="@{/comments/create}">Write Comments</a>
+        </div>   
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <footer th:replace="fragment :: footer"></footer>
+</body>
+</html>
